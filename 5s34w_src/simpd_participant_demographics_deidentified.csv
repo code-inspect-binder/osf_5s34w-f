@@ -1,0 +1,35 @@
+﻿ID,Age,Gender,hearing_screening,MoCA (/30),Years since PD diagnosis,History of speech treatment,CPIB (/30),Dysarthria severity,Hypophonia severity,Deviant perceptual characteristics
+PD01,79,m,fail: 4k@50dB in R; 2k@45dB in L; 4k@65dB in L,23,3,no,24,mild,mild-moderate,"imprecise consonants, breathy/hoarse, short phrases"
+PD02,70,m,fail: 4kHz @45dB,26,8,no,26,none,mild,"hoarse, short rushes of speech, increased rate"
+PD03,72,m,failed: 4kHz @ 45 dB in L and 60 dB in R,26,<1,no,20,mild,mild,"hoarse/wet, monopitch, imprecise articulation"
+PD04,63,m,passed,28,3,yes,21,none,mild,"breathy/hoarse, increased pitch"
+PD05,67,m,failed: 4kHz @ 50 dB right,29,12,yes,11,mild,mild,"audible inspiration, short rushes of speech, increased rate overall, imprecise consonsants"
+PD06,69,w,passed,29,7,no,2,none,moderate,"breathy/hoarse, strained"
+PD07,64,w,passed,28,6,no,7,mild,mild,"short phrases, audible inspirations, monopitch, imprecise articulation"
+PD08,74,w,"fail: 2 kHz @ 45 dB right, 4kHz @45 dB left and 50 dB right",25,2,no,16,mild,mild,"imprecise articulation, monopitch"
+PD09,68,m,passed,27,5,no,15,mild,mild,"breathy transient, reduced stress, prolonged phonemes, monopitch"
+PD10,67,m,passed,19,10,no,13,-,-,-
+PD11,65,m,fail: 4kHz right ,24,8,no,15,mild-moderate,mild,"increased rate, breathy/hoarse, fast rushes, increased pitch"
+PD12,66,m,fail: 4kHx @ 65dB left,27,3,no,20,mild,mild,"breathy/hoarse, imprecise consonants, monopitch"
+PD13,62,m,passed,24,1,no,5,mild,mild,"breathy, short phrases, loudness decay"
+PD14,73,w,passed,21,1,no,24,none,very mild,breathy/hoarse
+PD15,67,m,fail: 4kHx @ 45 dB left,26,5,no,19,mild,mild,"breathy/hoarse, imprecise consonants, monopitch, decreased loudness"
+PD16,70,w,passed,29,1,no,30,none ,none,none noted
+OC01,70,w,pass,26,,-,-,-,-,-
+OC02,66,m,pass,26,,-,-,-,-,-
+OC03,79,w,fail: 4kHz @50 dB,20,,-,-,-,-,-
+OC04,60,m,pass,27,,-,-,-,-,-
+OC05,64,m,fail: 4kHz @45dB left 50 db right,24,,-,-,-,-,-
+OC06,63,w,pass,30,,-,-,-,-,-
+OC07,73,w,pass,25,,-,-,-,-,-
+OC08,57,w,pass,25,,-,-,-,-,-
+OC09,64,w,pass,27,,-,-,-,-,-
+OC10,67,w,pass,28,,-,-,-,-,-
+OC11,58,m,pass,23,,-,-,-,-,-
+OC12,74,w,fail: 4kHz @ 45dB,24,,-,-,-,-,-
+OC13,60,m,pass,28,,-,-,-,-,-
+OC14,58,m,pass,27,,-,-,-,-,-
+OC15,80,m,fail: 4kHz @ 45dB left 50dB right ,27,,-,-,-,-,-
+OC16,67,m,fail: 4kHz @ 55 dB left 65 dB right,24,,-,-,-,-,-
+OC17 ,74,m,fail: 4kHz @ 45 dB left 50 dB right ,26,,-,-,-,-,-
+OC18,77,m,pass,27,,-,-,-,-,-

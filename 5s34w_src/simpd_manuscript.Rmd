@@ -1,0 +1,1350 @@
+---
+title: "Impact of face masks on speech in Parkinson's disease: Effect of clear and loud speech styles"
+date: Last updated `r Sys.Date()`
+output:
+  bookdown::word_document2:
+    reference_docx: "../../rmd_templates/JSLHR_custom_reference.docx"
+    number_sections: false
+  html_document: default
+csl: ../../../../References/csl_files/apa7.csl
+bibliography: ../../../../References/references.bib
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache=TRUE)
+knitr::opts_knit$set(root.dir = '../../')
+```
+
+```{r setup2, include=FALSE}
+library(thear)
+source("simpd_helper.R")
+demographics <- read_csv("data/simpd_participant_demographics_deidentified.csv")
+
+figs <- captioner::captioner(prefix="Figure")
+tbls <- captioner::captioner(prefix="Table")
+report_p <- thear::report_p
+```
+
+```{r fig-settings}
+mask_col <- c("darkgrey","#e5f5e0","#31a354")
+
+# Blue, green
+group_mask_col <- c("#1b7837","#7fbf7b","#d9f0d3",
+                    "#2166ac","#67a9cf","#d1e5f0")
+
+myggplot <- function(...) ggplot2::ggplot(...) +
+  scale_color_manual(values = mask_col)+
+  scale_fill_manual(values = mask_col)+
+  theme(legend.position = "bottom")+
+  theme_bw(base_size = 14)
+
+# Figure save paths and syntax
+fig_path = "manuscripts/sim-pd/4_proofs/figs/"
+fig_name = ""
+##tjmisc::ggpreview(width=10, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), width=10, units = "in", dpi="retina")
+
+# Table save syntax
+tbl_path = "manuscripts/tbls/"
+tbl_name = paste0("",".docx")
+# flextable::save_as_docx(tbl_m_rate,
+#   path = paste0(tbl_path, tbl_name)
+# )
+```
+
+# Introduction
+
+The use of face masks in the general population has increased dramatically since the onset of the COVID-19 pandemic. At the time of writing, face masks continue to be required in many health care settings. While an important means of personal protective equipment to prevent the spread of viral particles, face masks can make spoken communication difficult. This is likely the case because masks can affect audibility of the speech signal and reduce the availability of visual cues (see @oosthuizen2022 and @badh2022 for reviews). This difficulty may be enhanced in adverse listening conditions, such as in the presence of background noise or a distorted speech signal [@toscano2021], and may be worse for certain masks over others
+[@corey2020].
+
+People with communication disorders, such as those with dysarthria secondary to Parkinson's disease (PD), may be at a particular disadvantage when communicating while wearing a mask. Even without a mask, speech of many people with PD is often less intelligible compared to that of controls [@miller2007; @tjaden2014; @weismer2001].
+The speech of people with PD may be especially challenging to understand through a mask because some of the acoustic characteristics of parkinsonian speech are similar to the acoustic damping effects of face masks, meaning that the face masks may disproportionaly affect people with PD compared to typical speakers or even other forms of communication disorders. Namely, relatively weak concentrations of higher frequency acoustic energy is characteristic both of parkinsonian speech [@cushnie-sparrow2021; @dromey2003; @smith2014a] and face coverings [@atcherson2021; @corey2020; @goldin2020; @maryn2021].
+A common form of behavioral speech treatment in PD to improve speech intelligibility is to help individuals increase their vocal effort, i.e. speak more loudly or more clearly [@yorkston2007; @tjaden2014]. This strategy of using effortful speech may be especially useful when wearing a mask in order to compensate for the damping effects of wearing a face covering.
+
+This study examines the spectral acoustic consequences of wearing two types of face masks (surgical and KN95) worn by people with and without PD in three speaking conditions: habitual, clear, and loud.
+As will be described below, acoustic measures that characterize the shape and tendency of the spectral distribution of speech were chosen to identify the objective impact of face masks and speech styles on the acoustic profiles of speech in PD. Acoustic measures that are likely to be sensitive to speech intelligibility in PD were also measured to examine how masks impact speech transmission across the three speech styles.
+To the authors knowledge, this is the first study that examines the effects of face masks on communication of individuals with speech disorders. Furthermore, this study extends acoustic descriptions of clear and loud speech styles in order to contribute to a broader understanding of how spectral properties of speech may be modifiable. Findings will be discussed in the context of speech intelligibility and other perceptual outcomes.
+
+## Filtering effects of face masks on speech
+
+Previous literature has consistently shown that most face coverings of the sort recommended by public health officials to protect against viral transmission of COVID-19 are associated with a low-pass filtering effect of spectral speech information [@oosthuizen2022; @badh2022].
+Face masks have been shown to attenuate higher frequency information above 1 - 2 kHz across the long-term average spectrum of the speech signal [@atcherson2021; @corey2020; @goldin2020; @maryn2021]. Attenuation from masks is also associated with lower, or more negative, spectral tilt [@nguyen2021acoustic; @magee2020], which reflects a reduced ratio of the concentration of high frequency energy to low frequency energy in the speech signal. This spectral attenuation has been demonstrated to be less impacted for certain types of masks, such as surgical masks, compared to denser, more tightly woven masks, such as KN95 and N95 masks [@nguyen2021acoustic; @atcherson2021; @porschmann2020; @atcherson2020; @corey2020]. More tightly fitting masks may also restrict articulatory movements, such as jaw lowering or lip protrusion, which may have additional effects on the speech signal by modifying vocal tract configurations and in turn vowel and possibly consonant acoustics [@mckenna2022; @gutz2021]. @mckenna2022 found talkers produced more vowel centralization when wearing N95 masks, captured by a decrease in their acoustic vowel articulation index. This finding suggests that speakers may be producing smaller articulatory movements, which the authors postulated may have occurred due to restricted oral movements when speakers wore N95 masks. However, @gutz2021 found the opposite when wearing KN95 masks, namely that speakers tended to increase their vowel space area with the masks on. This suggests speakers may be making compensatory speech adjustments when wearing masks and these adjustments may depend on the features of the masks themselves. Further acoustic and kinematic studies are needed to identify the underlying causes of vocal tract adjustments speakers may make as a result of mask wearing.
+
+Characterization of this acoustic filtering imposed by face masks can be accomplished in several ways. One way is to pinpoint specific frequency bands or cut-offs at which attenuation is notable compared to when a talker is not wearing a mask [as demonstrated by @atcherson2021; @corey2020; @goldin2020; @maryn2021]. Another is to characterize spectral balance measures that take into account the overall relative concentrations of low to high energy across the speech spectrum. For example, speech produced with a mask that demonstrates spectral attenuation above 1 kHz will have a relatively higher concentration of low frequency energy compared to that same signal were it not filtered through a mask. As noted above, face masks likely have a multifaceted impact on speech signals by not only acting as a filter to the acoustic source signal directly, but also potentially by impacting articulatory positioning and talkers' compensatory behaviors. This study, however, will focus on the acoustic spectral consequences of wearing a mask, further discussed below.
+
+## Perceptual outcomes of speech produced with face masks
+
+Perceptually, speech produced in a face mask has often been associated with reduced intelligibility compared to when talkers are not wearing a mask, especially in adverse listening environments [@cohn2021; @toscano2021]. These effects have been shown to be at least in part due to the auditory signal and not only the absence of visual cues when a talkers' mouth is covered by a mask [@corey2020; @palmiero2016; @porschmann2020]. Speech produced in masks may also sound "muffled" [@guskaroska2021], which may at least in part be resultant from acoustic attenuation of higher frequency energy in the speech signal [@ostwald1960] such as that imposed by a face covering. Not all masks demonstrate equal amounts of detriment for listeners, however. For example, cloth masks and N95 masks have been shown to have a worse impact on speech intelligibility compared to surgical masks [@bottalico2020; @corey2020; @toscano2021; @mendel2008; @thomas2011; @brown2021].
+
+While perceptual outcomes are critical in understanding the functional impact of face masks on spoken communication, it is not clear the extent to which the acoustic impacts of face masks play a role in perception. Characterizing the acoustic impact of face masks and potential speech strategies that could be used to compensate for them is an important first step to understanding possible perceptual outcomes. The focus of the current manuscript is thus to provide an objective characterization of acoustic profiles of face masks and speech styles.
+
+## Spectral acoustics of speech in PD
+
+People with PD may be at a particular disadvantage when speaking while wearing a face mask due to speech characteristics associated with the disease.
+The majority of people with PD will develop hypokinetic dysarthria over the course of their disease [@logemann1978; @mutch1986; @muller2001], which is typically characterized by imprecise consonants, speech rate abnormalities, reduced speech loudness, and monopitch/monoloudness, among other features [@dab1969clusters; @dab1969differential; @adams2009]. Phonatory abnormalities are among the most common symptoms in PD and often include a breathy-hoarse voice quality [@logemann1978] often accompanied by reduced speech loudness [@adams2009].
+This cluster of symptoms is referred to as hypophonia [@adams2009]. Acoustically, hypophonia is often characterized by reduced speech intensity, reduced harmonics-to-noise ratio reflecting greater noise in the signal, and reduced spectral balance [@cushnie-sparrow2021; @adams2009; @tjaden2008]. Measures of spectral balance vary across the literature, but overall characterize the distribution of energy across the speech spectrum and include, among others, spectral tilt, ratios of low-to-high spectral energy, and spectral moments. Spectral moments characterize the central shape and tendency of energy across the long-term average speech spectrum (LTAS). In contrast, spectral tilt and low-high spectral ratio measures both reflect differences in dB between bands of low and high frequency energy, as described above.
+
+Steeper spectral tilt has been correlated with increased perceptions of breathiness in people with and without voice disorders [@hillenbrand1994; @hillenbrand1996]. Flatter (less negative) spectral tilt has also been associated with better intelligibility and greater perceived loudness and vocal effort in typical speakers [@lu2009].
+In PD, intensive voice treatment has been shown to be associated with changes in ratios of low-to-high spectral energy [@alharbi2019].
+A small body of literature suggests that spectral moments are useful for indexing perceptual measures of speech severity in the speech of people with speech or voice disorders, including those with PD [@dromey2003; @smith2014a; @tjaden2010; @tanner2005].
+First and second spectral moments, which reflect spectral means and standard deviations, have been shown to decrease following voice treatment in people with dysphonia, reflecting greater concentrations of higher frequency energy post-treatment [@tanner2005]. @tanner2005 also found that these acoustic changes were related to decreased perceptions of dysphonia severity.
+Speech in people with PD has been found to have lower first and second moments (spectral means and standard deviations) and higher third and fourth moments (skewness and kurtosis), all of which support a pattern of lower concentrations of high frequency spectral energy compared to controls [@dromey2003; @smith2014a]. In contrast, @tjaden2010 did not find overall group differences in spectral moments between talkers with PD and typical, age-matched controls, but did find that lower first moments and higher third moments were both associated with increases in perceived speech severity. Furthermore, these relationships were strongest in the speech of talkers with PD compared to talkers with multiple sclerosis and controls [@tjaden2010].
+
+Given that face masks attenuate higher frequency components of the speech signal, and that higher frequency components of speech are already weakened in the speech of people with PD, it stands to reason that this population may have greater speech-related challenges when wearing a face mask. The burden imposed by masks stands to pose an additional barrier to communication for individuals with PD above and
+beyond typical speech challenges.
+
+
+## Effortful speech and application to PD
+
+A common behavioral approach for improving speech outcomes in people with PD is to help individuals learn to use more effortful speech, such as speaking more loudly or more clearly. Both clear and loud speech are considered global behavioral treatment approaches for dysarthria because the changes elicited affect multiple speech subsystems, including respiration, phonation, articulation, and resonance [@dromey1998]. Loud speech, achieved by by increasing respiratory-phonatory effort, is a common goal of standardized, evidence-based speech intervention programs targeting hypophonia (i.e., Lee Silverman Voice Treatment program; @ramig2004). Clear speech, characterized by hyperarticulation and exaggeration, is another speech style that shows promise for increasing speech intelligibility [@tjaden2014; @martel2021], as demonstrated by experimental studies in which talkers are instructed to speak more clearly. While standardized clear speech intervention programs do not currently exist for people with PD, a small number of treatment studies have demonstrated that this may be an effective form of rehabilitation for dysarthria [@park2016; @shin2022; @whelan2022]. Speaking more clearly and/or more loudly may additionally be advantageous in compensating for the effects of face masks for all speaker groups, but particularly those with speech and/or voice disorders.
+
+In neurotypical speakers, both clear and loud speech styles have been associated with increases in vocal intensity and spectral balance [@fant1960; @ternstrom2006; @krause2004; @smiljanic2021a; @knowles2022].
+Clear and loud speech both demonstrate increased spectral energy in mid-to-high frequencies. For example, loud speech has been shown to increase energy in the range of the first five formants, characterized by an overall flatter spectral slope compared to habitual speech [@fant1960; @ternstrom2006]. This appears to be directly related to sound pressure level [@ternstrom2006]. @ternstrom2006 demonstrated that at *very* loud speech, energy around the first formant is even greater.
+Studies of clear speech have demonstrated that increased energy in the 1 - 3 kHz range, corresponding to the range of the first three formants, is responsible for much of the intelligibility benefit of speaking clearly for individuals without speech disorders [@krause2004; @krause2009; @hazan2018; @hazan2011; @gilbert2014; @smiljanic2021a].
+These increases in spectral energy appear to be driven by greater jaw opening and lingual movements that occur during loud and clear speech, which has been suggested in both typical talkers [@schulman1989; @mefferd2017] and those with PD [@kearney2017; @mefferd2019; @wong2017].
+Consistent with the literature in neurotypical talkers, louder speech produced by people with PD has been associated with increased concentrations of mid-to-high frequency energy [@alharbi2019].
+To date, spectral changes in clear speech have not explicitly studied in PD.
+
+One study to date has quantified the effect of loud speech styles on spectral moments in PD [@neel2009], which supports the pattern observed in typical speakers. That is, when talkers with PD speak more loudly, this results in increased spectral means and standard deviations and decreased skewness and kurtosis [@neel2009]. @neel2009 further examined differences in perceptual outcomes when speakers were told to speak more
+loudly compared to when their habitual speech was presented at a higher volume (amplified) for listeners. They found that loudly produced speech was more intelligible than amplified speech. The increases in higher frequency spectral information, as captured in the spectral moments analysis, were suggested as a possible explanation for these differences.
+
+## Face masks and effortful speech in young, typical speakers
+
+Our previous study investigated the spectral acoustics of speech of young, typical people wearing face masks and speaking in habitual and effortful styles [@knowles2022]. Specifically, speakers read aloud sentences in three face mask conditions: no mask, with a surgical mask, and with a KN95 mask. Each face mask condition was evaluated in three speech styles: habitual speech, clear speech, and loud speech. The present study extends these findings to older talkers with and without PD.
+
+Outcomes from younger participants using habitual speaking styles supported previous findings that face masks are associated with poorer measures of spectral balance, characterized by lower first and second moments, higher third and fourth moments, as well as lower spectral tilt and energy in the 1 - 3 kHz range. Surgical masks were associated with less attenuation compared to KN95 masks, though smaller effect sizes were found between the two masks than when comparing them to no mask.
+Clear and loud speaking styles, as expected, were found to be associated with increases in higher frequency spectral energy, with loud speech exhibiting greater changes compared to clear speech. The overall pattern of the face mask effects was maintained in clear and loud speech styles, though effect sizes for the mask conditions were smaller compared to for the speech style conditions when all speech styles were pooled.
+While face masks continued to attenuate higher frequency information across clear and loud speech styles, younger people were successful in increasing higher frequency components of the speech signal when using these styles in such a way that was equal to or surpassed their baseline spectral measures in habitual, unmasked speech. In other words, speaking more effortfully was associated with a greater magnitude of change in measures of spectral balance compared to wearing face masks, effectively compensating for the attenuation of the masks.
+
+As we age, physiological changes, such as increased laryngeal rigidity, can result in age-related voice changes [presbyphonia; see reviews in @martins2014; @kendall2007]. Voice related changes can include increased vocal fatigue, hoarse voice quality, and difficulties with vocal projection [@gregory2012]. Older adults with PD may experience these changes to their voice as a consequence of typical aging in addition to voice changes resulting from the disorder, as described above. Understanding the impact of wearing face masks on the speech of those with voice-related challenges, be they due to aging or disease, is an important step in being able to provide appropriate public health measures that can maximize public safety while minimizing communicative challenges in vulnerable populations.
+
+## Summary & Purpose
+
+The present study extends the paradigm used in @knowles2022 to explore the A) isolated effects of face masks and effortful speech styles on the spectral profiles of speech in PD and B) combined effects of face masks and effortful speaking styles on speech in PD. To summarize, face masks attenuate higher frequency spectral speech information, which can in turn lead to challenging perceptual conditions. More effortful speech styles, such as clear and loud speech, have the opposite effect, and may be used to compensate for the effects of masks in typical speakers. People with PD, whose speech is characterized by a damping of energy in higher frequency spectral components, may be particularly disadvantaged by the additional attenuation for frequencies above 1 - 2 kHz imposed by face masks [@atcherson2021; @corey2020; @goldin2020; @maryn2021], though to date no literature has investigated the effects of face masks on people with PD.
+
+Speaking clearly and/or loudly are behavioral strategies that are often implemented as a means of improving spoken communication in PD, and may be particularly beneficial to use when face masks must be worn. The purpose of this study was to identify the impact of face masks on the speech of people with PD and to determine whether clear and/or loud speech styles are successful at overcoming acoustic attenuation imposed by masks in older adults with and without PD. Three research questions
+were of interest.
+
+The first two questions were designed to characterize the isolated effects of 1) face masks and 2) speech styles on speech in PD in order to describe the spectral profiles of these factors: 
+
+1.  **Effects of face masks on spectral moments in habitual speech in people with and without PD**: What is the impact of face masks on spectral moments in speech produced by people with and without Parkinson's disease? We predict that people with PD will have reduced levels of high frequency spectral speech energy compared to controls [@dromey2003; @smith2014a; @cushnie-sparrow2021] and that wearing a face mask while speaking will attenuate high frequency spectral information compared to not wearing a mask [e.g., @atcherson2021; @corey2020; @goldin2020; @maryn2021; @knowles2021].
+We predict that attenuation imposed by face masks will have a
+similar *magnitude* of effect for both speaker groups, as there is no apriori reason to assume the filtering effect of masks would differ across speakers.
+2.  **Effects of effortful speech without a face mask on spectral moments in people with and without PD**: What is the impact of clear and loud speaking styles on spectral moments of speech produced by people with and without PD, without a face mask? We predict that clear, followed by loud speech will lead to an increase in higher frequency spectral information compared to habitual speech. This predicted order of effects is exploratory given the lack of research on spectral density characterizations of clear and loud speech. It is motivated, however, by the known contribution of increased energy in the range of the first formants [@fant1960; @ternstrom2006], which is expected to be highest in loud speech given the overall increased intensity [e.g., @tjaden2004].
+  
+The third question was designed to capture the *combined* effect of face masks and effortful speech styles on speech in PD in a way that characterized these effects on more targeted acoustic speech outcomes:
+
+3.  **Effects of PD, face masks, and effortful speech on acoustic measures of spectral balance**: What is the relationship between face masks and effortful speech styles (clear and loud) on acoustic measures of speech intensity and spectral balance (spectral tilt, mid-range frequency energy) of speech produced by people with and without PD? We predict that, when all mask and speech style data are pooled, higher frequency spectral information will be a) attenuated by face masks, as described in Research Question 1 and b) increased by effortful speech styles, as described in Research Question 2. Based on our previous findings in younger talkers [@knowles2022], we anticipate that speaking effortfully will result in larger effect sizes than wearing a mask. Given the established effects of clear and loud speech styles on speech production in PD [e.g., @tjaden2004; @tjaden2013; @kearney2017; @mefferd2019], we expect this our finding in younger talkers to replicate in older talkers with and without PD.
+
+# Methods
+
+`r tbls("tab-dem",caption="Participant demographics.")`
+
+```{r}
+demographics %>%
+  # Drop reasons included in text
+  filter(!(ID %in% c("OC01","OC03","OC10","PD10"))) %>%
+  select(-hearing_screening, -'History of speech treatment', -'Dysarthria severity') %>%
+  flextable::flextable() %>%
+  flextable::fontsize(size = 8, part = "body") %>%
+  flextable::fontsize(size = 8, part = "header")
+```
+
+This study was approved by the Institutional Review Board at the University at Buffalo.
+
+## Participants
+
+Participant demographics for the PD and older control (OC) participants are listed in
+`r tbls("tab-dem",display="cite")`. Sixteen participants with PD (11 men, 5 women; age range 62 - 79) and 18 controls (OC; 10
+men, 8 women; age range 57 - 83) were recruited for this study. All participants were native speakers of North American English or Canadian English. Other than PD, participants reported no other neurological diagnoses. Participants completed the Montreal Cognitive Assessment [MoCA; @nasreddine2005]. One PD and one OC participant (PD10, OC03) scored below 21/30 [the suggested cut-off for PD-dementia; @dalrymple2010] and were excluded as this could have impacted task performance. One control participant (OC01) had to leave the session early and did not complete the paradigm, and one control participant (OC10) had difficulty completing the modified speech conditions and was excluded.
+
+In total, 15 PD (10 men, 5 women, age range 62 - 79) and 15 OC participants (10 men, 5 women, age range 57 - 80) were included in the final analysis. Of these, one OC participant (OC14) reported having a lisp as a child which they received treatment for until age 7. Two PD participants (PD04, PD05) reported having seen a speech-language pathologist for treatment of speech symptoms related to PD more than two years ago. These participants were not excluded on these bases.
+Hypophonia severity and speech characteristics were identified by two speech-language pathologists. Speech characteristics correspond to perceptual features recommended by @duffy2019 when rating motor speech disorders. PD participants also completed the Communicative Participation Item Bank [CPIB; @baylor2013] as an index of the degree to which they felt their condition interfered with their participation in various communicative contexts. Lower scores (out of a possible 30) indicate more perceived interference.
+
+## Procedures
+
+All participants read aloud phonetically balanced Harvard sentence lists [@ieee1969] in three face mask conditions and three speech style conditions (nine conditions in total). Face mask conditions included no mask, a standard three-ply surgical mask, and a KN95 mask. Face mask conditions were randomized across participants to avoid an order effect.
+Speech style conditions included habitual, clear, and loud. All
+participants began with their habitual speech style, completing all three mask conditions before moving on to the next speech style. The order of the clear and loud speech conditions were counterbalanced across all participants. For each speech style and mask combination, participants read two Harvard sentence lists, which were randomly selected from lists 1 - 18. For each altered speech style condition, participants were instructed on how to speak, and then given the opportunity to practice reading aloud sentences from a previous list until they felt they were ready to proceed with the task. Instructions for the clear speaking condition were to "speak clearly by over-enunciating your speech, similar to how you might speak to someone who is having difficulty hearing you, or someone who is learning English and is having difficulty understanding you." Instructions for loud speech were to "speak at a volume that feels two times louder than your normal speaking voice." Participants did not receive feedback on their performance.
+
+Participants completed the experiment in a sound-treated room in approximately 30 minutes. Stimuli were presented on a computer monitor, and participants were seated at a 6 inch mouth-to-microphone distance from a table top microphone (Shure SM58). At the beginning of the experiment, calibration with a stable sound source was performed [@svec2018] in the following way. The researcher positioned a small loudspeaker under the
+chin of the participant and from it played a 1000 Hz tone of a fixed intensity. This was repeated three times and recorded. Real-time intensity of the tone was measured via a sound level meter (Galaxy Audio CM-170) positioned adjacent to the microphone. Following the recording sessions, the average intensity of the tone was measured off-line in Praat for each participant. The difference between the average real-time intensity and the off-line Praat intensity calculation was used as the "calibration factor." The speech intensity of each utterance for each participant was adjusted by this calibration factor.
+
+## Acoustic measures
+
+In preparation of acoustic measurement extraction, all utterance boundaries were demarcated and silences were removed using the Trim Silences function in Praat [threshold: -35 dB; minimum silence duration of 100 ms; @praat2021]. Utterances in which participants produced major reading errors or disfluencies were discarded (~4%, nearly all for PD speakers and approximately evenly distributed across speaking conditions).
+A customized Praat script was used to automatically calculate acoustic measures of interest for each utterance following silence removal. Speech intensity was calculated from the utterance (after silences were removed), while all other measures were calculated from the LTAS curves generated from each utterance.
+
+Outcome measures were selected in order to capture measures of central tendency and spread of acoustic energy, as well as measures that may be sensitive to the filtering effects of the masks and speaking styles. Measures included spectral moments, spectral tilt, mid-range frequency energy, and speech intensity, described in more detail below.
+
+Spectral moments characterize the central shape and tendency of energy across the speech spectrum and may be
+particularly useful for characterizing the effects of masks on the speech signal of persons with speech or voice disorders. The first spectral moment reflects spectral mean and is often referred to as the center of gravity (CoG), with higher values associated with a greater relative concentration of high frequency energy. The second spectral moment reflects the standard deviation of spectral mean. The third moment, skewness, is an indirect measure of tilt. Higher, more positive skewness levels reflect a lower overall concentration of high frequency energy. The fourth moment, kurtosis, reflects the "peakedness" of the spectrum, with higher values associated with more tightly concentrated values, and lower values associated with more even spread.
+
+Spectral tilt, as described above in the introduction, captures the difference in energy between a low and high frequency band in the speech spectrum. In this study, spectral tilt reflects the difference in energy between 0 - 1 kHz and 1 - 10 kHz.
+Mid-range frequency energy reflects the mean energy in the 1 - 3 kHz range of the speech spectrum. Mid-range frequency energy between 1 - 3 kHZ was chosen due to its importance in speech intelligibility, particularly as noted in clear speech literature [@hazan2004; @krause2004].
+
+To summarize, outcome measures across the research questions were as follows:
+
+-   Research Questions 1 and 2: Spectral moments (M1 - M4; as described above)
+    -   M1 - Spectral means
+    -   M2 - Standard deviation of the spectral means
+    -   M3 - Spectral skewness
+    -   M4 - Spectral kurtosis
+-   Research Question 3: Spectral balance measures
+    -   Mean speech intensity (dB) across each utterance
+    -   Mid-range frequency energy: Mean energy in the 1 - 3 kHz range
+        of the long-term average spectrum (LTAS)
+    -   Spectral tilt: Difference in energy between 0 - 1 kHz and 1 - 10 khZ of the LTAS
+
+
+## Statistical analyses
+
+In brief, outcome measures were modelled as a function of speaker group, face mask, and speech style, as well as all possible interactions using linear mixed effects models in R [@r2020]. Gender was included as a co-variate. Models were constructed using the *lmer* function from the *lmerTest* package and p-values were calculated using the Satterthwaite
+approximation [@lmerTest].
+Three sets of models were built in order to answer the research questions, described below. All fixed effects and outcome measures for each set of models is reported in `r tbls("tab-mod-summary",display="cite")`.
+
+### Coding of fixed effects
+
+Speaker group and gender were sum-coded (OC = +1, PD = -1; Women = +1, Men = -1). A positive model estimate for group indicates a higher estimated value for the OC compared to the PD group. For gender a positive estimate indicates a higher value observed for women compared to men Both face masks and speaking styles were contrast coded using reverse Helmert contrasts, which permit the mean of the baseline level to be compared to the mean of the subsequent levels. A three-level contrast allows for two comparisons: Level 1 versus Levels 2 and 3, and Level 2 versus 3. The baseline for face masks was no mask. The first comparison (No Masks versus Masks) compares not wearing a mask with the average value from wearing both the surgical mask and KN95 mask (No mask: +2/3; Surgical mask: -1/3; KN95 mask: -1/3). The second comparison (Surgical versus KN95) compares the two masks to one another (Surgical mask: +1/2; KN95 mask: -1/2). Under this scheme, a positive model estimate for the No mask versus Masks comparison (for example) would indicate a higher value observed when no masks were worn. In other words, positive estimates indicate a higher value for the baseline condition in each comparison. Speaking style was coded in the same way as face masks, with Habitual set as the baseline. Comparisons included Habitual versus Clear/Loud (+2/3, -1/3, -1/3, respectively) and Clear versus Loud
+(+1/2, -1/2).
+
+### Model syntax
+
+#### Research Question 1: Effects of PD and face masks on spectral moments in habitual speech
+
+To address Research Question 1, we explored the effects of speaker group and masks in the habitual speech style condition. Four models were run, one for each spectral moment (M1 - M4). Initial model inspection revealed non-normal (skewed) residuals. Spectral moments were log-transformed and subsequent model inspection revealed that the data met assumptions of residual normality and heteroskedasticity. All models included fixed effects of group, mask condition (No mask, surgical, KN95), and their interaction, coded as described above. Participant gender was included as a covariate. Random effects included by-participant and by-item random intercepts, as well as by-participant random slopes for mask condition.
+
+#### Research Question 2: Effects of PD and clear and loud speech styles without a mask on spectral moments
+
+To address Research Question 2, we modelled the effects of speaker group and clear and loud versus habitual speech on the four spectral moments, resulting in four separate models. For these models, we included only speech produced in the no mask condition in order to characterize the unique effects of effortful speech on spectral moments. Fixed effects included group, speech condition (habitual, clear, loud), and their interaction, as well as gender. Random effects included by-participant and by-item random intercepts, as well as by-participant random slopes for speech condition. As with the models for Research Question 1, spectral moments were log-transformed and model assumptions were confirmed using visual inspection of residuals.
+
+#### Research Question 3: Effects of PD, face masks, and effortful speech styles on measures of spectral balance
+
+Finally, to address Research Question 3, we pooled all the data and modelled the effects of group, masks, and speech styles combined. Outcome measures included speech intensity, spectral tilt, and mid-range frequency energy, resulting in three separate models. Fixed effects included group, mask condition, speech condition, and all possible interactions. Participant gender was again included as a covariate.
+Random effects included by-participant and by-item random intercepts.
+By-participant random slopes for mask and speech style were also included.
+
+### Effect size
+
+In addition to reporting model estimates, we calculated effect sizes for each predictor using the method outlined by @westfall2014. Effect sizes were computed by dividing the estimate by the square root of the total variance of the random effects (i.e., the sum of the variance for each random effect term plus the total residual variance). We refer to general effect sizes as very small, small, medium, and large, which correspond roughly to traditional Cohen's d cutoffs of \<0.2, 0.2 - 0.5, 0.5 - 0.8, and \>0.8, respectively [@cohen1962]. Effect sizes are not reported for non-statistically significant results ($p$ > 0.05) and are instead reported in the results tables as "ns."
+This approach allows us to compare relative effect sizes of predictors within this study as an accompaniment to typical cut-offs of statistical significance.
+Extending use of this approach, which was designed for simple mixed effects model structures, may not be directly comparable to classic Cohen's d [@brysbaert2018; @westfall2014]. However, we use this approach with this caveat in mind as a benchmark for comparing relative effects in the present study.
+
+`r tbls("tab-mod-summary", caption = "Summary of statistical models")`
+
+| Research Question                                                                           | Data                                            | Fixed effects                               | Outcome measures                                                                        |
+|------------------|----------------|----------------|------------------|
+| 1: Effects of PD and face masks on spectral moments in habitual speech                      | Habitual speech style condition; all face masks | Group \* Face mask + Gender                 | Spectral moments (M1 - M4)                                                              |
+| 2: Effects of PD and clear and loud speech on spectral moments in speech without face masks | No Mask condition; all speech styles            | Group\* Speech style + Gender               | Spectral moments (M1 - M4)                                                              |
+| 3: Effect of face masks and clear/loud speech on spectral acoustics                         | All face mask and speech style conditions       | Group \* Face mask \* Speech style + Gender | Speech intensity and spectral balance measures (spectral tilt, mid-range frequency energy) |
+
+# Results
+
+An example of spectrograms and LTAS for one speaker are shown in
+`r figs("figs-spectra",display="cite")`. Results are reported in
+`r tbls("tab-coefs-rq1",display="cite")` and
+`r figs("figs-rq1",display="cite")` -
+<!-- `r figs("figs-rq2",display="cite")`, -->
+<!-- `r figs("figs-rq3-a",display="cite")`, and -->
+`r figs("figs-rq3-c",display="cite")`. A forest plot for the final model results for Research Question 3 appears in the Appendix, which was created with the *sjPlot* R package [@ludecke2021]. Results are organized in the following way. We report model results for each of the three research questions sequentially. Within each research question, we report main effects followed by interactions. Specifically, we first report the effects of speaker group and face masks in habitual speech on spectral moments (Research Question 1). We then report the effects of speaker group and speech style on spectral moments in speech produced without a mask (Research Question 2). Finally, we present pooled model results that explore the effects of face masks and speech styles on speech intensity and spectral balance measures (Research Question 3).
+
+`r figs("fig-spectra",caption = "Examples of spectrograms and long-term average speech spectra for one talker (PD01) in (A) habitual speech, without a mask, (B) habitual speech, with the KN95 mask, (C) loud speech, without a mask, and (D) loud speech, with the KN95 mask.")`
+
+```{r figs-spectra}
+#knitr::include_graphics(path = "manuscripts/sim-pd/figs/spectra_images.pdf")
+```
+
+```{r make-dfs}
+
+se <- function(x) sd(x)/sqrt(length(x))
+
+df_tidied <- df %>%
+  mutate(group = case_when(
+    group=="oc" ~ "Control",
+    group=="pd" ~ "PD"
+  ),
+  cond_mask = case_when(
+    cond_mask=="nm" ~ "No mask",
+    cond_mask=="sm" ~ "Surgical",
+    cond_mask=="kn" ~ "KN95",
+  )) %>%
+  mutate(cond_mask = factor(cond_mask, levels = c("No mask","Surgical","KN95")))
+
+df_grouped <- df_tidied %>%
+  group_by(group, participant, cond_speech, cond_mask) %>%
+  summarize_if(is.numeric, mean, na.rm = TRUE) %>%
+  ungroup()
+  
+df_grouped_summary <- df_grouped %>%
+  group_by(cond_speech,group,cond_mask) %>%
+  summarize_if(is.numeric, mean, na.rm=TRUE) %>%
+  ungroup() %>%
+  select(cond_speech, group, cond_mask, cog, specsd, skew, kurt, int_corrected, tilt, mid_1_3k)
+
+df_grouped_summary_sds <- df_grouped %>%
+  group_by(cond_speech,group,cond_mask) %>%
+  summarize_if(is.numeric, sd, na.rm=TRUE) %>%
+  ungroup() %>%
+  select(cond_speech, group, cond_mask, cog, specsd, skew, kurt, int_corrected, tilt, mid_1_3k)
+
+# Baseline means
+df_baseline_means <- df_tidied %>%
+  filter(cond_mask == "No mask",
+         cond_speech == "habitual") %>%
+  group_by(participant,group) %>%
+  summarize(baseline_int = mean(int_corrected),
+            baseline_tilt = mean(tilt),
+            baseline_mid = mean(mid_1_3k),
+            baseline_m1 = mean(cog),
+            baseline_m2 = mean(specsd),
+            baseline_m3 = mean(skew),
+            baseline_m4 = mean(kurt)) %>% 
+  ungroup()
+
+df_grouped <- merge(df_grouped, df_baseline_means, by = "participant") %>%
+  select(-group.y) %>%
+  rename("group" = "group.x") %>%
+  mutate(group_mask = paste(group,cond_mask,sep = "_"),
+         group_mask = factor(group_mask, levels = unique(group_mask)))
+
+df_diffs <- df_grouped %>%
+  mutate(group_mask = paste(group,cond_mask,sep = "_"),
+         group_mask = factor(group_mask, levels = unique(group_mask))) %>%
+  mutate(int_diff = int_corrected - baseline_int,
+         tilt_diff = tilt - baseline_tilt,
+         mid_diff = mid_1_3k - baseline_mid,
+         m1_diff = cog - baseline_m1,
+         m2_diff = specsd - baseline_m2,
+         m3_diff = skew - baseline_m3,
+         m4_diff = kurt - baseline_m4)
+  
+
+
+df_habitual_summary <- df_grouped %>%
+  mutate(group_mask = paste(group,cond_mask,sep = "_"),
+         group_mask = factor(group_mask, 
+                             levels = unique(group_mask))) %>%
+  filter(cond_speech=="habitual") %>%
+  group_by(group, cond_mask, group_mask) %>%
+  summarize_if(is.numeric, funs(mean,median,se)) %>%
+  ungroup()
+
+df_nm_summary <- df_grouped %>% 
+  filter(cond_mask == "No mask") %>%
+  group_by(group, cond_speech) %>%
+  summarize_if(is.numeric, funs(mean,median,se)) %>%
+  ungroup()
+```
+
+```{r flextable-prefs-function}
+ft_prefs <- function(coefs){
+  coefs %>%
+  mutate(Contrast = factor(Contrast, levels = contrasts_ordered)) %>%
+  mutate(Measure = factor(Measure, levels = measures_ordered)) %>%
+  select(Measure, Contrast, everything()) %>%
+  arrange(Measure) %>%
+  flextable::flextable() %>%
+  flextable::merge_v(j = "Measure") %>%
+  flextable::theme_vanilla() %>%
+  flextable::fontsize(size = 8, part = "body") %>%
+  flextable::fontsize(size = 8, part = "header")
+}
+```
+
+## Effects of group and masks on spectral acoustics in habitual speech.
+
+<!-- Research Question 1: What is the impact of face masks on spectral acoustics of speech produced by people with and without Parkinson's disease? -->
+
+Results for Research Question 1 addressing the impact of face masks on spectral acoustics of speech in habitual speech styles are reported in
+`r tbls("tab-coefs-rq1",display="cite")` and
+`r figs("figs-rq1",display="cite")`.
+
+<!-- Model table edited -->
+
+`r tbls("tab-coefs-rq1",caption="Model results for Research Question 1: effects of speaker group and face masks in habitual speech. Model estimates for each outcome measure are grouped by fixed effects terms. Abbreviations: PD = Parkinson's disease; OC = Older controls; NM = No masks; SM = Surgical mask; KN = KN95 mask; M1-COG = first spectral moment, center of gravity; M1-COGsd = second spectral moment, center of gravity standard deviation; M3-skew = third spectral moment, skewness; M4-kurt = fourth spectral moment, kurtosis; tilt = spectral tilt; mid = mid-range frequency energy 1-3 kHz; ns = Not statistically significant.")`
+
+```{r tab-coefs-rq1}
+#unique(coefs_h_all$Contrast)
+#unique(coefs_h_all$Measure)
+contrasts_ordered <- c("(Intercept)", 
+                       "OC vs PD", 
+                       "NM vs Masks", "SM vs KN",
+                       "Women vs. Men", 
+                       "OC vs PD:NM vs Masks",
+                       "OC vs PD:SM vs KN")
+measures_ordered <- c("M1-COG", "M2-COGsd",
+                      "M3-skew", "M4-kurt", 
+                      "intensity", "tilt","mid 1-3khz")
+coefs_h_all %>%
+  ft_prefs()
+```
+
+`r figs("figs-rq1", caption = "Effects of face mask and speaker group on spectral moments in habitual speaking styles. Outcome measures are reported on the log scale.")`
+
+```{r figs-rq1}
+
+df_grouped_habitual <- df_grouped %>%
+  filter(cond_speech == "habitual")
+
+ggplot_rq1 <- function(...) myggplot(...) +
+  geom_point(aes(group=participant),
+             color = "lightgrey")+
+  geom_line(aes(group=participant),
+             color = "lightgrey", alpha = 0.75)+
+  geom_boxplot(alpha = 0.75, outlier.alpha = 0.25)+
+  facet_grid(~group) +
+  theme(legend.position = "null")+
+  scale_fill_manual(values = group_mask_col)+
+  scale_color_manual(values = group_mask_col)
+  
+
+ggplot_rq1_individ <- function(...) myggplot(...) +
+  geom_point(aes(group=participant),
+             color = "darkgrey")+
+  geom_line(aes(group=participant),
+             color = "darkgrey")+
+  facet_grid(~group) +
+  theme(legend.position = "null")+
+  scale_fill_manual(values = group_mask_col)+
+  scale_color_manual(values = group_mask_col)
+
+p_m1_h <- 
+  df_grouped_habitual %>%
+  ggplot_rq1(aes(x = cond_mask,
+             y = log(cog),
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "M1: Center of Gravity\n (log-transformed)")
+
+
+p_m2_h <- df_grouped_habitual %>%
+  ggplot_rq1(aes(x = cond_mask,
+             y = log(specsd),
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "M2: Center of Gravity st. dev\n (log-transformed)")
+
+p_m3_h <- df_grouped_habitual %>%
+    ggplot_rq1(aes(x = cond_mask,
+             y = log(skew),
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "M3: Skewness\n (log-transformed)")
+
+p_m4_h <- df_grouped_habitual %>%
+  ggplot_rq1(aes(x = cond_mask,
+             y = log(kurt),
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "M4: Kurtosis\n (log-transformed)")
+
+cowplot::plot_grid(p_m1_h, p_m2_h,
+                   p_m3_h, p_m4_h)
+
+fig_name <- "fig1a_habit_moments_revised.pdf"
+##tjmisc::ggpreview(height=10, width=12, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=10, width=12, units = "in", dpi="retina")
+```
+
+```{r figs-rq1b-individual, include = FALSE}
+# Individual plots; no longer included
+ggplot_rq1_individ <- function(...) myggplot(...) +
+  geom_point(aes(group=participant, color = cond_mask, label = participant))+
+  geom_line(aes(group=participant, linetype = group),
+             color = "darkgrey")+
+  #geom_text(aes(group = participant, label = participant))+
+  facet_grid(~group) +
+  theme(legend.position = "null")+
+  scale_fill_manual(values = group_mask_col)+
+  scale_color_manual(values = group_mask_col)
+
+p_m1_h <- 
+  df_grouped_habitual %>%
+  ggplot_rq1_individ(aes(x = cond_mask,
+             y = log(cog),
+             fill = group_mask))+
+  # geom_errorbar(aes(ymin = cog_mean - cog_se,
+  #                   ymax = cog_mean + cog_se))+
+  labs(x = "Face mask",
+       y = "M1: Center of Gravity")
+
+
+p_m2_h <- df_grouped_habitual %>%
+  ggplot_rq1_individ(aes(x = cond_mask,
+             y = log(specsd),
+             fill = group_mask))+
+  # geom_errorbar(aes(ymin = specsd_mean - specsd_se,
+  #                   ymax = specsd_mean + specsd_se))+
+  labs(x = "Face mask",
+       y = "M2: Center of Gravity st. dev")
+
+p_m3_h <- df_grouped_habitual %>%
+    ggplot_rq1_individ(aes(x = cond_mask,
+             y = log(skew),
+             fill = group_mask))+
+  # geom_errorbar(aes(ymin = skew_mean - skew_se,
+  #                   ymax = skew_mean + skew_se))+
+  labs(x = "Face mask",
+       y = "M3: Skewness")
+
+p_m4_h <- df_grouped_habitual %>%
+  ggplot_rq1_individ(aes(x = cond_mask,
+             y = log(kurt),
+             fill = group_mask))+
+  # geom_errorbar(aes(ymin = kurt_mean - kurt_se,
+  #                   ymax = kurt_mean + kurt_se))+
+  labs(x = "Face mask",
+       y = "M4: Kurtosis")
+
+cowplot::plot_grid(p_m1_h, p_m2_h,
+                   p_m3_h, p_m4_h)
+
+fig_name <- "fig1a_habit_moments_individual.pdf"
+##tjmisc::ggpreview(height=10, width=12, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=10, width=12, units = "in", dpi="retina")
+```
+
+### Main effect of group
+
+Overall, the speech of the PD group was characterized by attenuated high frequency energy compared to controls.
+Specifically, in habitual speech, with all other effects held at their average values, a statistically significant main effect of group was found for M1, M3, and M4. No effect of group was found for M2.
+Small, positive model estimates indicated that controls had higher spectral means (
+M1: $\hat{\beta}$ = `r habit_cogB['gr',1]`, $p$ `r report_p(habit_cogP['gr',1])`
+)
+and lower skewness and kurtosis (M3 and M4, respectively; 
+M3: $\hat{\beta}$ = `r habit_skewB['gr',1]`, $p$ `r report_p(habit_skewP['gr',1])`;
+M4: $\hat{\beta}$ = `r habit_kurtB['gr',1]`, $p$ `r report_p(habit_kurtP['gr',1])`
+).
+
+### Main effect of mask
+
+```{r eval = FALSE}
+# Use for visual inspection while writing
+sjPlot::plot_model(m_int_habit, type = "pred",
+                   terms = c("cond_mask"))
+
+sjPlot::plot_model(m_cog_habit, type = "pred",
+                   terms = c("cond_mask"))
+sjPlot::plot_model(m_cogsd_habit, type = "pred",
+                   terms = c("cond_mask"))
+sjPlot::plot_model(m_skew_habit, type = "pred",
+                   terms = c("cond_mask"))
+sjPlot::plot_model(m_kurt_habit, type = "pred",
+                   terms = c("cond_mask"))
+
+sjPlot::plot_model(m_tilt_habit, type = "pred",
+                   terms = c("cond_mask"))
+sjPlot::plot_model(m_mid_habit, type = "pred",
+                   terms = c("cond_mask"))
+
+sjPlot::plot_model(m_tilt_habit, type = "pred",
+                   terms = c("gender"))
+```
+
+Wearing a mask attenuated higher frequency spectral energy, as evidenced by statistically significant main effects of face masks for all four spectral moments measures in habitual speech. 
+The first comparison captured the difference between not wearing a mask compared to the average value of the surgical and KN95 masks (No Mask vs. Masks).
+Effects varied in magnitude.
+Negative estimates for this comparison indicate lower estimated values for speech produced with a mask compared to without, and reflect outcomes when group and gender are held at a constant, average value.
+Medium and large positive effects were found for M1 and M2,
+respectively, reflecting higher spectral means and variability when participants were not wearing a mask
+(
+M1: $\hat{\beta}$ = `r habit_cogB['nm-ms',1]`, $p$ `r report_p(habit_cogP['nm-ms',1])`;
+M2: $\hat{\beta}$ = `r habit_cogsdB['nm-ms',1]`, $p$ `r report_p(habit_cogsdP['nm-ms',1])`
+).
+Medium and large negative effects were observed for M3 and M4, respectively, indicating lower
+skewness and kurtosis without a mask
+(
+M3: $\hat{\beta}$ = `r habit_skewB['nm-ms',1]`, $p$ `r report_p(habit_skewP['nm-ms',1])`;
+M4: $\hat{\beta}$ = `r habit_kurtB['nm-ms',1]`, $p$ `r report_p(habit_kurtP['nm-ms',1])`
+).
+
+Statistically significant differences between the masks were also observed (SM vs. KN), though these effects were relatively smaller than the No Mask vs. Masks comparison. 
+Surgical masks compared to KN95 masks were associated with higher M1 and M2 and lower M3 and M4, the same pattern observed for No Masks vs. Masks
+(
+M1: small effect, $\hat{\beta}$ = `r habit_cogB['sm-kn',1]`, $p$ `r report_p(habit_cogP['sm-kn',1])`;
+M2: medium effect, $\hat{\beta}$ = `r habit_cogsdB['sm-kn',1]`, $p$ `r report_p(habit_cogsdP['sm-kn',1])`;
+M3: small effect, $\hat{\beta}$ = `r habit_skewB['sm-kn',1]`, $p$ `r report_p(habit_skewP['sm-kn',1])`;
+M4: small effect, $\hat{\beta}$ = `r habit_kurtB['sm-kn',1]`, $p$
+`r report_p(habit_kurtP['sm-kn',1])`
+).
+Findings support a greater damping effect of the KN95 mask compared to the surgical mask,
+indicating a hierarchy of effects which can be summarized by
+No mask \> Surgical mask \> KN95 mask.
+
+Talker gender was also included as a covariate. Compared to men, women demonstrated significantly higher M1 and M2
+(
+small effects,
+M1: $\hat{\beta}$ = `r habit_cogB['gen',1]`, $p$ `r report_p(habit_cogP['gen',1])`;
+M2: $\hat{\beta}$ = `r habit_cogsdB['gen',1]`, $p$ `r report_p(habit_cogsdP['gen',1])`
+).
+This is consistent with greater concentrations of low-frequency energy present in men's speech.
+
+```{r eval = FALSE}
+# Use for visual inspection while writing
+
+sjPlot::plot_model(m_int_habit, type = "pred",
+                   terms = c("group","cond_mask")) # intensity interaction is confusing; more of a drop for surgical mask
+
+sjPlot::plot_model(m_cog_habit, type = "pred", #ns
+                   terms = c("group","cond_mask"))
+sjPlot::plot_model(m_cogsd_habit, type = "pred", #ns
+                   terms = c("group","cond_mask"))
+
+sjPlot::plot_model(m_skew_habit, type = "pred", # greater impact of masks on skew, kurt for PD
+                   terms = c("group","cond_mask"))
+sjPlot::plot_model(m_kurt_habit, type = "pred",
+                   terms = c("group","cond_mask"))
+
+sjPlot::plot_model(m_tilt_habit, type = "pred", # greater impact of masks on tilt for PD
+                   terms = c("group","cond_mask"))
+
+sjPlot::plot_model(m_mid_habit, type = "pred", # ns
+                   terms = c("group","cond_mask"))
+
+```
+
+There were no group-by-mask interactions in habitual speech.
+Overall, this suggests that the pattern of effects of the masks was consistent across both speaker groups.
+
+## Effects of clear and loud speech on spectral moments
+
+Results for Research Question 2 addressing the impact of speaker group and clear and loud
+speech on spectral moments in speech without a face mask are reported
+in `r tbls("tab-coefs-rq2",display="cite")` and
+`r figs("figs-rq2",display="cite")`.
+
+`r tbls("tab-coefs-rq2",caption="Model results for Research Question 2: effects of speaker group and speech style without a mask. Model estimates for each outcome measure are grouped by fixed effects terms. Abbreviations: PD = Parkinson's disease; OC = Older controls; M1-COG = first spectral moment, center of gravity; M1-COGsd = second spectral moment, center of gravity standard deviation; M3-skew = third spectral moment, skewness; M4-kurt = fourth spectral moment, kurtosis; tilt = spectral tilt; mid = mid-range frequency energy 1-3 kHz; ns = Not statistically significant.")`
+
+```{r tab-coefs-rq2}
+#unique(coefs_nm_all$Contrast)
+# [1] "(Intercept)"                 
+# [2] "Clear vs Loud"               
+# [3] "Habit vs Clear/Loud"         
+# [4] "genderM vs F"                
+# [5] "PD vs OC"                    
+# [6] "PD vs OC:Clear vs Loud"      
+# [7] "PD vs OC:Habit vs Clear/Loud"
+#unique(coefs_nm_all$Measure)
+contrasts_ordered <- c("(Intercept)", 
+                       "OC vs PD", 
+                       "Habit vs Clear/Loud",
+                       "Clear vs Loud", 
+                       "Women vs. Men",
+                       "OC vs PD:Habit vs Clear/Loud",
+                       "OC vs PD:Clear vs Loud")
+measures_ordered <- unique(coefs_nm_all$Measure)
+  
+coefs_nm_all %>%
+  ft_prefs()
+```
+
+`r figs("figs-rq2", caption = "Effects of speech styles (habitual, clear, loud) and speaker group on spectral moments without a face mask. Outcome measures are reported on the log scale.")`
+
+```{r figs-rq2}
+
+df_grouped_nm <- df_grouped %>%
+  filter(cond_mask == "No mask")
+
+speech_col = c("whitesmoke","darkgrey","black")
+
+ggplot_rq2 <- function(...) myggplot(...) +
+  geom_point(aes(group=participant),
+             color = "lightgrey")+
+  geom_line(aes(group=participant),
+             color = "lightgrey", alpha = 0.75)+
+  geom_boxplot(alpha = 0.75, outlier.alpha = 0.25)+
+  facet_grid(~group) +
+  theme(legend.position = "null")+
+  scale_fill_manual(values = speech_col)
+
+
+p_m1_nm <- 
+  df_grouped_nm %>%
+  ggplot_rq2(
+    aes(x = cond_speech,
+             y = log(cog),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = cog_mean - cog_se,
+    #                 ymax = cog_mean + cog_se))+
+  labs(x = "Speech style",
+       y = "M1: Center of Gravity\n (log-transformed)")#+
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = cog),
+  #                           alpha = 0.5)
+#p_m1_nm
+
+p_m2_nm <- df_grouped_nm %>%
+  ggplot_rq2(aes(x = cond_speech,
+             y = log(specsd),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = specsd_mean - specsd_se,
+    #                 ymax = specsd_mean + specsd_se))+
+  labs(x = "Speech style",
+       y = "M2: Center of Gravity st. dev\n (log-transformed)")
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = specsd),
+  #                           alpha = 0.5)
+
+p_m3_nm <- df_grouped_nm %>%
+  ggplot_rq2(aes(x = cond_speech,
+             y = log(skew),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = skew_mean - skew_se,
+    #                 ymax = skew_mean + skew_se))+
+  labs(x = "Speech style",
+       y = "M3: Skewness\n (log-transformed)")
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = skew),
+  #                           alpha = 0.5)
+
+p_m4_nm <- df_grouped_nm %>%
+  ggplot_rq2(aes(x = cond_speech,
+             y = log(kurt),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = kurt_mean - kurt_se,
+    #                 ymax = kurt_mean + kurt_se))+
+  labs(x = "Speech style",
+       y = "M4: Kurtosis\n (log-transformed)")
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = kurt),
+  #                           alpha = 0.5)+
+
+cowplot::plot_grid(p_m1_nm, p_m2_nm,
+                   p_m3_nm, p_m4_nm)
+
+fig_name <- "fig2_nm_moments_revised.pdf"
+##tjmisc::ggpreview(height=10, width=12, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=10, width=12, units = "in", dpi="retina")
+
+```
+
+
+```{r figs-rq2-individual, include = FALSE}
+# Indiviudal plots; no longer including
+ggplot_rq2_individ <- function(...) myggplot(...) +
+  geom_point(aes(group=participant, shape = cond_speech))+
+  geom_line(aes(group=participant, linetype = group),
+            color = "darkgrey")+
+  facet_grid(~group) +
+  theme(legend.position = "null")+
+  scale_fill_manual(values = speech_col)+
+  scale_color_manual(values = speech_col)
+
+
+p_m1_nm <- 
+  df_grouped_nm %>%
+  ggplot_rq2_individ(
+    aes(x = cond_speech,
+             y = log(cog),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = cog_mean - cog_se,
+    #                 ymax = cog_mean + cog_se))+
+  labs(x = "Speech style",
+       y = "M1: Center of Gravity")#+
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = cog),
+  #                           alpha = 0.5)
+#p_m1_nm
+
+p_m2_nm <- df_grouped_nm %>%
+  ggplot_rq2_individ(aes(x = cond_speech,
+             y = log(specsd),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = specsd_mean - specsd_se,
+    #                 ymax = specsd_mean + specsd_se))+
+  labs(x = "Speech style",
+       y = "M2: Center of Gravity st. dev")
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = specsd),
+  #                           alpha = 0.5)
+
+p_m3_nm <- df_grouped_nm %>%
+  ggplot_rq2_individ(aes(x = cond_speech,
+             y = log(skew),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = skew_mean - skew_se,
+    #                 ymax = skew_mean + skew_se))+
+  labs(x = "Speech style",
+       y = "M3: Skewness")
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = skew),
+  #                           alpha = 0.5)
+
+p_m4_nm <- df_grouped_nm %>%
+  ggplot_rq2_individ(aes(x = cond_speech,
+             y = log(kurt),
+             fill = cond_speech))+
+    # geom_errorbar(aes(ymin = kurt_mean - kurt_se,
+    #                 ymax = kurt_mean + kurt_se))+
+  labs(x = "Speech style",
+       y = "M4: Kurtosis")
+  # ggbeeswarm::geom_beeswarm(data = df_grouped,
+  #                           aes(y = kurt),
+  #                           alpha = 0.5)+
+  #ylim(c(0,500)) # make note of this: 2 values removed
+
+cowplot::plot_grid(p_m1_nm, p_m2_nm,
+                   p_m3_nm, p_m4_nm)
+
+fig_name <- "fig2_nm_moments_indivd.pdf"
+```
+
+### Main effect of group
+
+Consistent with what was found in habitual speech, the PD group showed more attenuated higher frequency spectral energy compared to controls.
+This was captured by a small, statistically significant effect of speaker group for M1
+(
+$\hat{\beta}$ = `r nm_cogB['gr',1]`, $p$ `r report_p(nm_cogP['gr',1])`
+),
+and reflects the No Mask data pooled across all three speech style conditions (habitual, clear, loud).
+No main effects of group were found for the other spectral moments.
+
+### Main effects of speech style
+
+The first comparison captured the difference between habitual speech compared to clear and loud speech combined.
+A negative estimate indicates a lower value in habitual speech.
+Overall, clear and loud speech styles amplified higher frequency components of the spectrum, as evidenced by a medium effect on M1 
+(
+$\hat{\beta}$ = `r nm_cogB['h-cl',1]`, $p$ `r report_p(nm_cogP['h-cl',1])`
+)
+and small effects on M3 and M4
+(
+M3: $\hat{\beta}$ = `r nm_skewB['h-cl',1]`, $p$ `r report_p(nm_skewP['h-cl',1])`;
+M4, kurtosis: $\hat{\beta}$ = `r nm_kurtB['h-cl',1]`, $p$ `r report_p(nm_kurtP['h-cl',1])`
+).
+No effect was observed for M2.
+This pattern was most evident for loud speech, which was captured by the Clear vs. Loud comparison. Here a negative estimate reflects a smaller value observed for clear compared to loud speech.
+Loud speech was associated with statistically significantly higher M1 and lower M3 and M4 values than clear speech
+(
+M1: small effect, $\hat{\beta}$ = `r nm_cogB['c-l',1]`, $p$ `r report_p(nm_cogP['c-l',1])`;
+M3: small effect, $\hat{\beta}$ = `r nm_skewB['c-l',1]`, $p$ `r report_p(nm_skewP['c-l',1])`,
+M4: very small effect, $\hat{\beta}$ = `r nm_kurtB['c-l',1]`, $p$ `r report_p(nm_kurtP['c-l',1])`
+).
+Again, no effect was observed for M2.
+
+Women had higher M1 and M2 than men
+(
+M1: medium effect, $\hat{\beta}$ = `r nm_cogB['gen',1]`, $p$ `r report_p(nm_cogP['gen',1])`;
+M2: small effect, $\hat{\beta}$ = `r nm_cogsdB['gen',1]`, $p$ `r report_p(nm_cogsdP['gen',1])`
+).
+There were no gender effects for M3 or M4.
+No group by speech style interactions were found.
+
+## Effects of masks and speaking style on speech intensity, spectral tilt, and mid-frequency energy
+
+Results for Research Question 3 addressing the combined effects of masks and speech styles on measures of spectral balance including speech intensity, spectral tilt, and mid-range
+frequency energy are reported in
+`r tbls("tab-coefs-rq3",display="cite")` through
+`r figs("figs-rq3-a",display="cite")` and
+`r figs("figs-rq3-c",display="cite")`.
+A forest plot of model outcomes appears in the Appendix.
+
+`r tbls("tab-coefs-rq3",caption="Model results for Research Question 2 and 3: effects of speaker group, face mask, and speaking style. Model estimates for each outcome measure are grouped by fixed effects terms. Abbreviations: PD = Parkinson's disease; OC = Older controls; NM = No masks; SM = Surgical mask; KN = KN95 mask; M1-COG = first spectral moment, center of gravity; M1-COGsd = second spectral moment, center of gravity standard deviation; M3-skew = third spectral moment, skewness; M4-kurt = fourth spectral moment, kurtosis; tilt = spectral tilt; mid = mid-range frequency energy 1-3 kHz.; ns = Not statistically significant")`
+
+```{r tab-coefs-rq3}
+#unique(coefs_all$Contrast)
+# [1] "(Intercept)"                             
+#  [2] "NM vs Masks"                             
+#  [3] "SM vs KN"                                
+#  [4] "Clear vs Loud"                           
+#  [5] "Clear vs Loud:NM vs Masks"               
+#  [6] "Clear vs Loud:SM vs KN"                  
+#  [7] "Habit vs Clear/Loud"                     
+#  [8] "Habit vs Clear/Loud:NM vs Masks"         
+#  [9] "Habit vs Clear/Loud:SM vs KN"            
+# [10] "genderM vs F"                            
+# [11] "PD vs OC"                                
+# [12] "PD vs OC:NM vs Masks"                    
+# [13] "PD vs OC:SM vs KN"                       
+# [14] "PD vs OC:Clear vs Loud"                  
+# [15] "PD vs OC:Clear vs Loud:NM vs Masks"      
+# [16] "PD vs OC:Clear vs Loud:SM vs KN"         
+# [17] "PD vs OC:Habit vs Clear/Loud"            
+# [18] "PD vs OC:Habit vs Clear/Loud:NM vs Masks"
+# [19] "PD vs OC:Habit vs Clear/Loud:SM vs KN" 
+
+contrasts_ordered <- c("(Intercept)", "OC vs PD", 
+                       "NM vs Masks","SM vs KN",
+                       "Habit vs Clear/Loud","Clear vs Loud",
+                       "Women vs. Men",
+                       # two-way interactions
+                       "OC vs PD:NM vs Masks",
+                       "OC vs PD:SM vs KN",
+                       "OC vs PD:Habit vs Clear/Loud",
+                       "OC vs PD:Clear vs Loud",
+                       "Habit vs Clear/Loud:NM vs Masks",
+                       "Habit vs Clear/Loud:SM vs KN",
+                       "Clear vs Loud:NM vs Masks",
+                       "Clear vs Loud:SM vs KN",
+                       # three-way interactions
+                       "OC vs PD:Habit vs Clear/Loud:NM vs Masks",
+                       "OC vs PD:Habit vs Clear/Loud:SM vs KN",
+                       "OC vs PD:Clear vs Loud:NM vs Masks",
+                       "OC vs PD:Clear vs Loud:SM vs KN")
+
+measures_ordered <- unique(coefs_all$Measure)
+
+coefs_all %>%
+  ft_prefs()
+  
+```
+
+`r figs("figs-rq3-a",caption="Effect of group, mask, and speech condition on all acoustic measures of interest. Horizontal lines reflect average speaker baselines in habitual speech without a mask: green dashed line reflects control speakers' baseline; blue dotted line reflects PD speakers' baseline.")`
+
+```{r figs-rq3-a}
+df_baseline_means_summary <- df_baseline_means %>%
+  group_by(group) %>%
+  summarize_if(is.numeric, mean) %>%
+  ungroup()
+
+pd_baseline <- df_baseline_means_summary %>%
+  filter(group == "PD")
+oc_baseline <- df_baseline_means_summary %>%
+  filter(group == "Control")
+
+# hline size
+baseline_size = 1.5
+
+ggplot_rq3a <- function(...) myggplot(...) +
+  geom_boxplot(alpha = 0.75,
+               outlier.color = "darkgrey",
+               linetype = "solid")+
+  facet_grid(group~cond_speech) +
+  theme(legend.position = "null")+
+          #axis.text.x = element_text(size = 8))+
+  scale_fill_manual(values = group_mask_col)+
+  labs(x = "Face mask")
+
+
+# Hacky plot to get proper linetype legend
+p_legend <- df_grouped %>%
+  ggplot_rq3a(aes(x = cond_mask,
+             y = cog,
+             fill = group_mask,
+             linetype = group))+
+    geom_hline(data = subset(df_baseline_means_summary, group=="Control"),
+               aes(yintercept = baseline_m1,
+                   linetype = group),
+               color = "darkgreen")+
+    geom_hline(data = subset(df_baseline_means_summary, group=="PD"),
+               aes(yintercept = baseline_m1,
+                   linetype = group),
+               color = "darkblue")+
+    labs(linetype = "Baseline means",
+         fill = "Group, Mask")+
+    theme(legend.position = "bottom",
+          legend.direction = "vertical")+
+  theme_bw(base_size = 18)+
+  scale_linetype_manual(values = c("dashed","dotted"))
+
+p_legend <- cowplot::get_legend(p_legend)
+
+
+p_int <- df_grouped %>%
+  ggplot_rq3a(aes(x = cond_mask,
+             y = int_corrected,
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "Speech intensity (dB)")+
+    geom_hline(yintercept = oc_baseline$baseline_int,
+               color = "darkgreen", linetype = "dashed", size = baseline_size)+
+    geom_hline(yintercept = pd_baseline$baseline_int,
+               color = "darkblue", linetype = "dotted", size = baseline_size)
+
+p_mid <- df_grouped %>%
+  ggplot_rq3a(aes(x = cond_mask,
+             y = mid_1_3k,
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "Mid-range frequency energy")+
+    geom_hline(yintercept = oc_baseline$baseline_mid,
+               color = "darkgreen", linetype = "dashed", size = baseline_size)+
+    geom_hline(yintercept = pd_baseline$baseline_mid,
+               color = "darkblue", linetype = "dotted", size = baseline_size)
+
+p_tilt <- df_grouped %>%
+  ggplot_rq3a(aes(x = cond_mask,
+             y = tilt,
+             fill = group_mask))+
+  labs(x = "Face mask",
+       y = "Spectral tilt (dB)")+
+    geom_hline(yintercept = oc_baseline$baseline_tilt,
+               color = "darkgreen", linetype = "dashed", size = baseline_size)+
+    geom_hline(yintercept = pd_baseline$baseline_tilt,
+               color = "darkblue", linetype = "dotted", size = baseline_size)
+
+# cowplot::plot_grid(p_m1, p_m2, p_m3, p_m4,
+#                    p_int, p_tilt, p_mid, p_legend,
+#                    nrow = 4)
+
+cowplot::plot_grid(p_int, p_tilt, p_mid, p_legend, nrow = 2)#, p_legend, nrow = 4)
+
+fig_name <- "fig4_all_revised.pdf"
+#tjmisc::ggpreview(height=14, width=14, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=14, width=14, units = "in", dpi="retina")
+
+```
+
+
+```{r figs-rq3-b, include = FALSE}
+# Now omitted
+# Caption:
+# `r figs("figs-rq3-b",caption="Effect of group, mask, and speech condition on the *change* in speech intensity, spectral tilt, and mid-frequency energy for each talker and group relative to their baseline. Values reflect differences for each group, mask, and speech condition compared to baseline (habitual, no mask) for each participant. Horizontal dashed line reflects individuals' baseline average (y = 0).")`
+
+ggplot_rq3b <- function(...) myggplot(...) +
+  geom_point(aes(group=participant),
+              color = "lightgrey")+
+  geom_line(aes(group=participant),
+             color = "lightgrey", alpha = 0.5)+
+  #geom_violin(alpha = 0.75, draw_quantiles = 0.5)+
+  geom_boxplot(alpha = 0.75,
+               outlier.alpha = 0.25)+
+  #ggbeeswarm::geom_quasirandom(side = -1, size = 2.5)+
+  #geom_violin(alpha = 0.75, draw_quantiles = c(0.25, 0.5, 0.75))+
+  facet_grid(group~cond_speech) +
+  theme(legend.position = "null")+
+        #axis.text.x = element_text(size = 8))+
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red")+
+  #scale_alpha_manual(values = c(0.85, 0.45))
+  scale_fill_manual(values = group_mask_col)+
+  labs(x = "Face mask")
+
+p_legend_diffs <- df_diffs %>%
+  ggplot_rq3b(aes(x = cond_mask,
+                 y = int_diff,
+                 fill = group_mask))+
+  guides(fill = guide_legend(ncol=2))+
+  labs(fill = "Group, Mask",
+       y = "Intensity difference")+
+  theme(legend.position = "bottom",
+        legend.direction = "vertical")
+
+p_int_diffs <- p_legend_diffs + theme(legend.position = "null")
+
+p_legend_diffs <- cowplot::get_legend(p_legend_diffs)
+
+p_tilt_diffs <- df_diffs %>%
+  ggplot_rq3b(aes(x = cond_mask,
+                 y = tilt_diff,
+                 fill = group_mask))+
+  labs(y = "Tilt difference")
+
+p_mid_diffs <- df_diffs %>%
+  ggplot_rq3b(aes(x = cond_mask,
+                 y = mid_diff,
+                 fill = group_mask))+
+  labs(y = "1-3 kHz energy difference")
+
+cowplot::plot_grid(p_mid_diffs,p_tilt_diffs,
+                   ncol=2)
+
+fig_name <- "fig5.pdf"
+
+##tjmisc::ggpreview(height=12, width=14, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=12, width=14, units = "in", dpi="retina")
+
+```
+
+`r figs("figs-rq3-c",caption="Effect of group, mask, and speech condition on the *difference* in spectral tilt and mid-frequency energy for each talker and group relative to the controls' baseline (habitual, unmasked speech). Horizontal dashed line reflects controls' baseline average (y = 0). Upright triangles reflect values that are greater than or equal to controls' baseline; downward triangles reflect values that fall below it.")`
+
+```{r figs-rq3-c}
+
+ggplot_rq3c <- function(...) myggplot(...) +
+  geom_point(aes(group=participant),
+             color = "lightgrey")+
+  geom_line(aes(group=participant),
+             color = "lightgrey", alpha = 0.75)+
+  geom_boxplot(alpha = 0.75,
+               outlier.color = "darkgrey",
+               linetype = "solid")+
+  facet_grid(group~cond_speech) +
+  theme(legend.position = "null")+
+          #axis.text.x = element_text(size = 8))+
+  scale_fill_manual(values = group_mask_col)+
+  labs(x = "Face mask")
+
+
+p_mid <- 
+  df_grouped %>%
+    mutate(mid_diff = mid_1_3k - oc_baseline$baseline_mid,
+           tilt_diff = tilt - oc_baseline$baseline_tilt) %>%
+    mutate(mid_ou = if_else(mid_diff < 0, "under", "over"),
+           tilt_ou = if_else(tilt_diff < 0, "under","over")) %>%
+    #select(mid_1_3k, mid_diff)
+  ggplot_rq3c(aes(x = cond_mask,
+             y = mid_diff,
+             fill = group_mask))+
+    geom_point(aes(shape = mid_ou),
+              alpha=0.5, size = 2)+
+  scale_shape_manual(name = "Compared to control baselines",
+                     values = c(24,25))+
+  labs(x = "Face mask",
+       y = "Difference in Mid-range frequency energy")+
+    geom_hline(yintercept = 0,
+               color = "red", linetype = "dashed", size = baseline_size)
+
+p_tilt <- df_grouped %>%
+    mutate(mid_diff = mid_1_3k - oc_baseline$baseline_mid,
+           tilt_diff = tilt - oc_baseline$baseline_tilt) %>%
+    mutate(mid_ou = if_else(mid_diff < 0, "under", "over"),
+           tilt_ou = if_else(tilt_diff < 0, "under","over")) %>%
+    #select(mid_1_3k, mid_diff)
+  ggplot_rq3c(aes(x = cond_mask,
+             y = tilt_diff,
+             fill = group_mask))+
+    geom_point(aes(shape = tilt_ou),
+              alpha=0.5, size = 2)+
+  scale_shape_manual(name = "Compared to control baselines",
+                     values = c(24,25))+
+  labs(x = "Face mask",
+       y = "Difference in Spectral tilt (dB)")+
+    geom_hline(yintercept = 0,
+               color = "red", linetype = "dashed", size = baseline_size)
+
+cowplot::plot_grid(p_tilt, p_mid)#, p_legend, nrow = 4)
+
+fig_name <- "fig5_revised.pdf"
+#tjmisc::ggpreview(height=12, width=14, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=12, width=14, units = "in", dpi="retina")
+
+```
+
+
+### Main effect of group
+
+Controls produced greater concentrations of high frequency spectral energy, captured by small, statistically significant effects of group on spectral tilt
+(
+$\hat{\beta}$ = `r tiltB['gr',1]`, $p$ `r report_p(tiltP['gr',1])`
+)
+and mid-frequency energy (
+$\hat{\beta}$ = `r midB['gr',1]`, $p$ `r report_p(midP['gr',1])` ).
+Significant main group differences were not observed for speech intensity.
+
+### Main effect of masks
+
+When pooled across habitual, clear, and loud speech, the effects of wearing a mask patterned with those seen in habitual speech reported above when answering Research Question 1. That is, masks were associated with attenuation of higher frequency energy, and this effect was observed to be greater for the KN95 mask than for the surgical mask. Overall, effect sizes were small or very small.
+Positive estimates reflect higher outcomes without a mask compared to with the masks.
+Face masks were associated with overall lower speech intensity
+(
+very small effect, $\hat{\beta}$ = `r intB['nm-ms',1]`, $p$ `r report_p(intP['nm-ms',1])`
+),
+spectral tilt
+(
+small effect, $\hat{\beta}$ = `r tiltB['nm-ms',1]`, $p$ `r report_p(tiltP['nm-ms',1])`
+),
+and mid-frequency energy
+(
+very small effect, $\hat{\beta}$ = `r midB['nm-ms',1]`, $p$ `r report_p(midP['nm-ms',1])`
+).
+KN95 masks, compared to surgical masks, resulted in lower tilt
+(
+small effect, $\hat{\beta}$ = `r tiltB['sm-kn',1]`, $p$ `r report_p(tiltP['sm-kn',1])`
+)
+and mid-frequency energy
+(
+very small effect; $\hat{\beta}$ = `r midB['sm-kn',1]`, $p$
+`r report_p(midP['sm-kn',1])`
+),
+but *higher* speech intensity
+(
+very small effect, $\hat{\beta}$ = `r intB['sm-kn',1]`, $p$ `r report_p(intP['sm-kn',1])`;
+).
+
+
+### Main effect of speech styles
+
+When pooled across the three mask conditions and both speaker groups, the effects observed for loud and clear speech were consistent with the pattern observed on spectral moments in unmasked speech. Loud, followed by clear speech styles were associated with greater speech intensity and a greater concentration of higher frequency energy.
+When both clear and loud were pooled and compared to habitual speech (Habit vs Clear/Loud), large effects were observed for intensity 
+(
+$\hat{\beta}$ = `r intB['h-cl',1]`, $p$ `r report_p(intP['h-cl',1])`
+)
+and mid-frequency energy
+(
+$\hat{\beta}$ = `r midB['h-cl',1]`, $p$ `r report_p(midP['h-cl',1])`
+),
+and a medium effect was observed for spectral tilt
+(
+$\hat{\beta}$ = `r tiltB['h-cl',1]`, $p$ `r report_p(tiltP['h-cl',1])`
+).
+
+Compared to clear speech, loud speech was produced with greater intensity
+(
+medium effect, $\hat{\beta}$ = `r intB['c-l',1]`, $p$
+`r report_p(intP['c-l',1])`
+),
+flatter tilt 
+(
+medium effect, $\hat{\beta}$ = `r tiltB['c-l',1]`, $p$ `r report_p(tiltP['c-l',1])`
+),
+and greater mid-frequency energy
+(
+medium effect; $\hat{\beta}$ = `r midB['c-l',1]`, $p$ `r report_p(midP['c-l',1])`
+).
+
+### Interactions
+
+Across all three speech styles and within the two groups, these patterns were largely maintained, as visible in
+`r figs("figs-rq3-a",display="cite")` and
+`r figs("figs-rq3-c",display="cite")`.
+This is supported by an overall lack of two-way and three-way interactions between speech style and mask condition for most comparisons across the three outcome measures (see
+`r tbls("tab-coefs-rq3",display="cite")`).
+Interactions between masks and speech styles were either non-significant or very small.
+
+
+# Discussion
+
+The purpose of this study was to characterize the effects of masks and effortful speech styles on acoustic measures of spectral shape, tendancy, and balance. Research Questions 1 and 2 sought to characterize the isolated effects of masks and speech styles, respectively, on spectral moments, while Research Question 3 characterized the combined effects of masks and speech styles on speech intensity, spectral tilt, and mid-range frequency energy.
+Overall, face masks were found to attenuate higher frequency energy in the speech signal in similar ways for people with and without PD, across habitual, clear, and loud speech styles.
+Speaking loudly, followed by speaking clearly, was associated with increases in spectral balance measures (mid-range frequency and tilt), though these gains were limited when participants wore surgical or especially KN95 masks. As demonstrated in `r figs("figs-rq3-a",display="cite")`, these increases resulting from clear or loud speech generally resulted in participants surpassing their spectral balance levels at baseline, i.e., habitual speech without a mask.
+In other words, for both older controls and people with PD, speaking more effortfully was generally successful in overcoming the damping effects of the masks with regards to the spectral outcomes addressed here. These findings are consistent with those found in the speech of young, typical controls in @knowles2022.
+As can be seen in Figures 2 - 4, substantial individual variability exists. Our models accounted for this variability in the random effects structures, though we refer to effect sizes in the context of our reporting in order to compare the relative contributions of our variables of interest.
+
+## Effect of face masks on spectral moments in PD
+
+Research Question 1 addressed the effects of surgical and KN95 face masks on the shape and tendency of the spectral density characteristics of speech of people with and without PD when using their habitual, everyday speaking style. Overall, results supported the generalization that masks attenuate higher frequency components of speech, and people with PD have lower concentrations of high frequency energy compared to controls at baseline.
+
+In habitual speech, we observed statistically significant main effects of masks resulting in medium to large effect sizes for all spectral moments.
+Specifically, face masks, compared to no masks, were associated with medium to large decreases in first and second moments and medium to large increases in third and fourth moments when pooled across all speakers, and these patterns persisted in both speaker groups.
+This is consistent with previous literature documenting a low-pass filtering effect of masks on the speech signal [@corey2020; @maryn2021]. Greater damping of higher frequency energy is associated with a lower overall spectral mean and subsequent variability (M1 and M2).
+Greater skewness (M3) is attributable to a right-sided tail of the LTAS, consistent with lower energy in higher frequencies. Greater kurtosis or peakedness (M4) captures a greater concentration of energy around the mean. Notably, these effects were consistent across both groups.
+
+Of the two masks, the KN95 mask showed more attenuation than the surgical mask. The difference between the two masks were statistically significant for all spectral moments, though effect sizes were smaller than the difference between no masks and the two masks overall. This finding supports previous literature showing that attenuation amounts can vary by mask type and material [@nguyen2021acoustic; @corey2020; @maryn2021]. However, previous studies have suggested that surgical masks and KN95 masks may have similar profiles of acoustic attenuation [@corey2020]. For example, @corey2020 found that both surgical and KN95 masks demonstrated peak attenuation levels at 4 dB.
+
+Statistically significant main effects of group for all moments but M2 provided evidence that the PD speakers have more low frequency energy compared to controls. However, these effects were small. The group differences are consistent with previous literature supporting lower concentrations of high frequency spectral energy in the speech of people with PD [@dromey2003; @smith2014a; @cushnie-sparrow2021; though see @tjaden2010].
+The pattern of the masks was consistent for both groups, as evidenced by the absence of any group by mask interactions.
+
+
+## Effect of effortful speech styles on spectral moments in PD
+
+Our second research question sought to characterize the effect of speaking more clearly or more loudly on spectral moments in the absence of face masks. Our findings support previous literature that shows increased vocal effort is associated with not only greater speech intensity, but higher concentrations of energy in higher frequency components of the speech signal [@fant1960; @ternstrom2006; @krause2004; @smiljanic2021a; @knowles2022].
+Compared to habitual speech, effortful speech in general was associated with a medium increase in M1 and small decreases in M3 and M4. No statistically significant difference was found for M2.
+Loud speech led to greater magnitudes of change for M1, M3, and M4 compared to clear speech, as evidenced by statistically signficant comparisons between the speech styles. Effect sizes between clear and loud speech, however, were small.
+A small effect of group was found for M1, consistent with the results for Research Question 1 demonstrating overall lower spectral means for people with PD. The pattern of change in clear and loud speech across groups was very similar, evidenced again by an absence of group-by-speech style interactions for all spectral moments.
+
+## Combined effects of face masks and speech styles on spectral balance
+
+Results from Research Questions 1 and 2 so far have affirmed the following: 1) people with PD have lower concentrations of high frequency spectral energy in their speech compared to controls, 2) face masks attenuate higher frequency spectral energy in speech, though do this to a similar extent for speech of people with and without PD, and 3) speaking more clearly and more loudly enhances spectral balance, and does so similarly for people with and without PD.
+Research Question 3 examined the combined effects of masks and speech styles on two measures of spectral balance as well as speech intensity. Overall, these results support those found in Research Questions 1 and 2.
+Small, statistically main significant effects of group were found for spectral tilt and mid-range frequency energy, but not speech intensity, which affirms that, even when all mask and speech styles were pooled together, participants with PD had poorer spectral balance compared to controls.
+The use of effortful speech, compared to habitual speech, resulted in medium to large increases for all three outcome measures. Loud speech resulted in medium-size increases compared to clear speech.
+
+The masks were found to result in statistically significant decreases compared to no mask, but these differences were small compared to the change from clear and loud speech. Specifically, for both the No Mask versus Masks comparison and the surgical versus KN95 mask comparison, very small effect sizes were found for speech intensity and mid-range frequency energy, and small effect sizes were observed for spectral tilt.
+
+Interactions between variables were either not statistically significant or were very small.
+In other words, the pattern of attenuation imposed by the masks was robust across speech styles, and the pattern of spectral enhancement resulting from effortful speech was robustly observed when people wore or did not wear face masks.
+This is consistent with the findings of our previous study which investigated young, typical speakers [@knowles2022].
+While distance from the talker was not a variable included in the present study, results from @knowles2022 demonstrated an even larger effect of masks for spectral tilt at greater recording distances, i.e., at 2-meters. That is, a greater drop-off in spectral tilt was observed when the talker was further away, such as during social distancing. This has potentially further repercussions for the impact on dysarthric speech signals.
+
+Both speaker groups demonstrated similar degrees of change resulting from face masks and modifying their speech style. The effects of masks and more effortful speech result in the same *direction* and *magnitude* of effects for both groups, as evidenced by largely null interactions in
+`r tbls("tab-coefs-rq3",display="cite")`.
+However, people with PD demonstrated lower baselines for most acoustic measures to begin with (main effect of group), and therefore do not benefit from clear and loud speech as much as they would without a mask. Masks have the effect of damping a poorer acoustic signal, and the effects of changing ones' speech to be clearer or louder are reduced for people who produce a poorer acoustic speech signal to begin with. This pattern is most readily observable for certain measures in `r figs("figs-rq3-a",display="cite")`, in which the green dashed line reflects control baseline means, and the blue dotted
+line reflects PD baseline means.
+To even more clearly present this effect, we visualized mid-range frequency energy and spectral tilt as the difference compared to control participants' baselines in `r figs("figs-rq3-c",display="cite")`.
+Take for example, spectral tilt, which reflects the difference in energy between 0 - 1 kHz and 1 - 10 kHz.
+In habitual speech, the PD group's tilt values fall below the control speakers (shown by the red dashed line), and even more so when wearing the masks.
+In clear speech *without* a mask, they approximate control speaker baseline and many participants exceed it (evidenced by upright triangle points), but still largely fall below the controls' baseline *with* a mask. Furthermore, when wearing a KN95 mask, all PD participants spectral tilt values fall below the controls' baseline, even in clear speech.
+In loud speech without a mask, most PD participants' tilt values surpass the control baseline, but once again many individuals still drop below when donning either of the masks, and especially the KN95 mask.
+This highlights the finding that the masks attenuate not only the acoustic signal, but also attenuate the gains made by producing clear and loud speech for people with PD.
+The present study provides an objective characterization of the acoustic consequences of face masks and the opposing consequences of effortful speech styles in the context of spectral balance deficits in parkinsonian speech. These acoustic characterizations are important in advancing an understanding of the nature of spectral balance in dysarthria and the mechanistic means of factors that may alter it. 
+
+When people with PD need to wear face masks, for example in medical settings, a tentative recommendation based on these findings would be to a) wear a less dense (but effective) mask such as a surgical mask and b) use loud speech techniques to compensate for the acoustic filtering effects and maximize speech transmission.
+Whether these changes in the acoustic signal have a functional impact on speech intelligibility or other perceptual outcomes is an open question that we are currently investigating. Given previous literature on the correspondence between spectral balance measures and perceived speech severity and intelligibility [@dromey2003; @tjaden2010; @cushnie-sparrow2021], this very well may be the case.
+@cushnie-sparrow2021 found, for example, that spectral balance measures such as tilt were more predictive of perceptual estimations of loudness and intelligibility than overall intensity in the speech of people with and without PD. Furthermore, the authors found that synthetically amplifying mid and high frequency ranges of the speech signal while controlling for overall intensity were associated with increases in perceived loudness, suggesting that spectral balance plays an important role in multiple perceptual outcomes. @gutz2021 found that, for young, typical speakers, KN95 face masks did not result in reduced automatic speech recognition performance at baseline, but clear and loud speech were associated with improvements in word recognition when speakers wore masks. @smiljanic2021 found that native English listeners recognized fewer words when speakers with foreign-accented speech wore masks, but this improved when talkers were instructed to speak more clearly.
+
+Similar to challenges observed for listeners understanding foreign-accented speech with the additional degradation of a mask, people with atypical speech production, such as those with dysarthria who have reduced intelligibility at baseline, may be particularly difficult to understand. From a clinical perspective, if masks further impede the speech signal of people with dysarthria and standard behavioral interventions are limited by the impedance of the mask, different clinical approaches may be warranted. For example, it may be necessary for some individuals to use amplification devices in addition to using effortful speech styles when wearing a mask, whereas without a mask effortful speech alone may have been sufficient. A long term goal of this line of work is to identify acoustic predictors of perceptual challenges imposed by masks, including speech intelligibility and listener effort and to identify potential routes to better compensate as warranted.
+The present study provides an objective characterization of the acoustic consequences of face masks and the opposing consequences of effortful speech styles in the context of spectral balance deficits in parkinsonian speech. These acoustic characterizations are important in advancing an understanding of the nature of spectral balance in dysarthria and the mechanistic means of factors that may alter it. A long-term goal of this line of work is to identify acoustic predictors of perceptual challenges imposed by masks, including speech intelligibility and listener effort and to identify potential routes to better compensate as warranted. 
+
+These and future findings may also shed light on how filter characteristics due to vocal tract configurations or face coverings such as masks versus glottal source characteristics can impact spectral balance in speech. For example, one outcome of the present study is that while both face masks and effortful speech impact spectral balance in opposing ways, the masks have a relatively small effect compared to increased phonatory effort. Future work that examines kinematic or aerodynamic adjustments made when individuals wear masks could help to inform these contributions from a phonatory-articulatory standpoint. Integrating different mask types, such as more reverberant (e.g., plastic) or restrictive (e.g., N95s) masks is also an avenue to explore the resultant spectral outcomes. Findings from this line of work may provide guidance as to specific behavioral changes that individuals with or without speech disorders may be able to make in order to maximize the ability to compensate for the masks.
+
+While face masks are less frequently worn now than at the height of the COVID-19 pandemic, anecdotal reports from health officials warn that increased masking may be warranted in future waves. Furthermore, masks and social distancing are commonly still mandated in many health care settings, which are places in which people with neurodegenerative diseases are more likely to access than the neurotypical population.
+Accurate communication in such settings is important, and thus an understanding of the impact of personal protective measures on speech of people with speech and voice disorders is of value from a clinical and public health perspective.
+
+## Limitations
+
+While these results provide further evidence to established patterns in the literature of the filtering effects of masks and the acoustic benefits of effortful speech, several caveats are warranted. These findings reflect a relatively small speaker group with a large degree of heterogeneity in PD speech symptoms and severity. Future work would benefit from modelling the contributions of severity and prominent symptom clusters (i.e., hypophonia) in spectral acoustic outcomes.
+Relatedly, while all participants were given identical instructions in how to modify their speech styles consistent with previous studies [i.e., @tjaden2004; @smiljanic2021a], it is likely that the precise implementations varied. Participants may have made different unconscious adjustments to their speech when wearing masks as well, though previous literature suggests these subconscious mask-related adjustments may be small [@gutz2021] and may be more likely to occur when speakers are intentionally trying to sound clearer [@cohn2021]. While counter balancing of the speech style conditions and randomization of the mask order was used to control for these potential differences here, more systematic manipulations of acoustic changes (i.e., through the use of synthesized or amplified speech) would help to tease these differences apart in future studies.
+Another caveat is that while the speech stimuli included phonetically balanced sentence lists, some utterances needed to be discarded due to production errors. While this affected a relatively small number of utterances overall (4%), this may have had an impact on the phonetic characteristics and subsequent acoustic outcomes. Face coverings have been shown to have differential effects on fricatives, for example, by lowering the spectral means of /f/ and /θ/, which have relatively flat spectral density characteristics, but not /s/ and /ʃ/, marked by concentrations of high frequency noise [@fecher2011a]. Further controlled accounts of the impact of masks on specific acoustic-phonetic characteristics is warranted.
+
+## Conclusion
+
+In summary, findings from the present study can be summarized as follows. Face masks attenuate higher frequency energy in speech, and this is similarly true for people with and without PD, people with PD have lower concentrations of high frequency energy compared to.
+Speaking more clearly, followed by more loudly, is associated with increases in higher frequency energy, which has the effect of remediating the damping imposed by masks, and this is again true for people with and without PD.
+The effects of masks are preserved across habitual and effortful speech styles, though masks limit the gains achieved by making speech clearer and louder. These limitations may be especially detrimental for talkers with PD, who demonstrate lower levels of spectral balance to begin with.
+Future research should address the impact of masks on perceptual outcomes for people with dysarthria, as well as alternative or augmentative means of remediating such challenges.
+
+# Appendix
+
+`r tbls("tab-means",caption="Mean values (averaged over the individual participants) for speech outcomes across all groups and conditions.")`
+
+```{r tab-means}
+df_grouped_summary %>% 
+  rename("Group" = "group",
+         "Speech style" = "cond_speech",
+         "Face mask" = "cond_mask",
+         "M1" = "cog", "M2" = "specsd",
+         "M3" = "skew", "M4" = "kurt",
+         "Intensity" = "int_corrected",
+         "Tilt" = "tilt",
+         "1 - 3 kHz energy" = "mid_1_3k") %>%
+  flextable::flextable() %>%
+  flextable::merge_v(j = c("Group","Speech style")) %>%
+  flextable::theme_zebra() %>%
+  #flextable::theme_vader() %>%
+  flextable::fontsize(size = 8, part = "body") %>%
+  flextable::fontsize(size = 8, part = "header")
+```
+
+`r figs("fig-model-output",caption="Model estimates for Research Question 3: Effects of group, masks, and speech condition on speech intensity, spectral tilt, and mid-frequency energy.")`
+
+```{r fig-model-output}
+
+p1 <- sjPlot::plot_model(m_int, 
+                   type = "est", 
+                   show.values = TRUE, 
+                   show.p = TRUE, value.offset = 0.3)+
+  theme_bw()+
+  geom_hline(yintercept = 0,color="darkgrey")+
+  scale_x_discrete(labels = function(x)
+    str_wrap(str_remove_all(x, "group|cond_speech|cond_mask")))+
+  labs(title = "Speech intensity")
+
+
+  
+
+p2 <- sjPlot::plot_model(m_tilt, 
+                   type = "est", 
+                   show.values = TRUE, 
+                   show.p = TRUE, value.offset = 0.3)+
+  theme_bw()+
+  geom_hline(yintercept = 0,color="darkgrey")+
+  scale_x_discrete(labels = function(x)
+    str_wrap(str_remove_all(x, "group|cond_speech|cond_mask")))+
+  labs(title = "Tilt")+
+  theme(axis.text.y = element_blank())
+
+p3 <- sjPlot::plot_model(m_mid, 
+                   type = "est", 
+                   show.values = TRUE, 
+                   show.p = TRUE, value.offset = 0.3)+
+  theme_bw()+
+  geom_hline(yintercept = 0,color="darkgrey")+
+  scale_x_discrete(labels = function(x)
+    str_wrap(str_remove_all(x, "group|cond_speech|cond_mask")))+
+  labs(title = "Mid-frequency energy")+
+  theme(axis.text.y = element_blank())
+
+cowplot::plot_grid(p1,p2,p3,
+                   rel_widths = c(1,1/2,1/2),
+                   nrow=1)
+
+fig_name <- "Appendix_figz_model_output_revised.pdf"
+##tjmisc::ggpreview(height=10, width=12, units="in",device="pdf")
+#ggsave(paste0(fig_path,fig_name), height=10, width=12, units = "in", dpi="retina")
+
+```
+
+
+# References
